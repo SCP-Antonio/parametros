@@ -82,6 +82,7 @@ class _FormularioState extends State<Formulario> {
                 SizedBox(height: 15),
 
                 Container(
+
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.grey),
@@ -89,7 +90,7 @@ class _FormularioState extends State<Formulario> {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   child: DropdownButton<String>(
-                    style: TextStyle( fontSize: 20),
+
 
                     value: generoValue,
 
