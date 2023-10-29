@@ -54,7 +54,7 @@ class _FormularioState extends State<Formulario> {
                   ),
                 ),
 
-                SizedBox(height: 15),
+                 SizedBox(height: 15),
 
                 Container(
                   decoration: BoxDecoration(
@@ -89,19 +89,25 @@ class _FormularioState extends State<Formulario> {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   child: DropdownButton<String>(
+                    style: TextStyle( fontSize: 20),
+
                     value: generoValue,
+
                     isExpanded: true,
-                    hint: Text('Género'),
                     onChanged: (String? newValue) {
                       setState(() {
                         generoValue = newValue;
                       });
                     },
+                    hint: Text('Género'),
                     items: <String>['Masculino', 'Femenino', 'Otro']
                         .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                            value,
+                          style: TextStyle( fontSize: 20),
+                           )
                       );
                     }).toList(),
                   ),
@@ -193,6 +199,9 @@ class _FormularioState extends State<Formulario> {
                         );
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(150,50)
+                    ),
                     child: Text('Enviar'),
                   ),
                 ),
@@ -247,8 +256,6 @@ class NuevaVentana extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildInfoCard(String label, String value, IconData icon) {
     return Card(
       elevation: 4,
@@ -274,4 +281,3 @@ class NuevaVentana extends StatelessWidget {
     );
   }
 }
-
