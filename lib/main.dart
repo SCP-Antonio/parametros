@@ -31,58 +31,12 @@ class _FormularioState extends State<Formulario> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: nombreController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Nombres',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingresa tus nombres';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                buildTextField('Nombres', nombreController, 'Por favor, ingresa tus nombres', Icons.person),
+                buildTextField('Apellidos', apellidoController, 'Por favor, ingresa tus apellidos', Icons.person),
 
-                 SizedBox(height: 15),
+
 
                 Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: apellidoController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Apellidos',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingresa tus apellidos';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 15),
-
-                Container(
-
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.grey),
@@ -90,10 +44,7 @@ class _FormularioState extends State<Formulario> {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   child: DropdownButton<String>(
-
-
                     value: generoValue,
-
                     isExpanded: true,
                     onChanged: (String? newValue) {
                       setState(() {
@@ -106,80 +57,19 @@ class _FormularioState extends State<Formulario> {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(
-                            value,
-                          style: TextStyle( fontSize: 20),
-                           )
+                          value,
+                          style: TextStyle(fontSize: 20),
+                        ),
                       );
                     }).toList(),
                   ),
                 ),
+                SizedBox(height: 20),
+                buildTextField('DUI', duiController, '', Icons.credit_card),
+                buildTextField('Dirección', direccionController, '', Icons.location_on),
+                buildTextField('Correo Electrónico', correoController, 'Por favor, ingresa tu correo electrónico', Icons.email),
 
-                SizedBox(height: 15),
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: duiController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'DUI',
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 15),
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: direccionController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Dirección',
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 15),
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: correoController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Correo Electrónico',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingresa tu correo electrónico';
-                      } else if (!value.contains('@')) {
-                        return 'Correo electrónico no válido';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 25),
+                SizedBox(height: 20),
 
                 Container(
                   child: ElevatedButton(
@@ -201,7 +91,7 @@ class _FormularioState extends State<Formulario> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      fixedSize: Size(150,50)
+                      fixedSize: Size(150, 50),
                     ),
                     child: Text('Enviar'),
                   ),
@@ -211,6 +101,38 @@ class _FormularioState extends State<Formulario> {
           ),
         ),
       ),
+    );
+  }
+
+  // Método para construir campos de texto con validación y un icono
+  Widget buildTextField(String label, TextEditingController controller, String? validationMessage, IconData icon) {
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: Colors.grey),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          child: TextFormField(
+            controller: controller,
+            style: TextStyle(fontSize: 20),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: label,
+              prefixIcon: Icon(icon), // Agregar un icono al campo de texto
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return validationMessage;
+              }
+              return null;
+            },
+          ),
+        ),
+        SizedBox(height: 15),
+      ],
     );
   }
 }
