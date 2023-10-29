@@ -274,3 +274,4 @@ class NuevaVentana extends StatelessWidget {
     );
   }
 }
+
