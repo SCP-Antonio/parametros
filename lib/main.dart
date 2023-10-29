@@ -5,11 +5,16 @@ void main() => runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
 ));
 
-class Formulario extends StatelessWidget {
+class Formulario extends StatefulWidget {
+  @override
+  _FormularioState createState() => _FormularioState();
+}
+
+class _FormularioState extends State<Formulario> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellidoController = TextEditingController();
-  TextEditingController generoController = TextEditingController();
+  String? generoValue;
   TextEditingController duiController = TextEditingController();
   TextEditingController direccionController = TextEditingController();
   TextEditingController correoController = TextEditingController();
@@ -26,7 +31,6 @@ class Formulario extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // Nombres
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -49,8 +53,9 @@ class Formulario extends StatelessWidget {
                     },
                   ),
                 ),
+
                 SizedBox(height: 15),
-                // Apellidos
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -73,8 +78,9 @@ class Formulario extends StatelessWidget {
                     },
                   ),
                 ),
+
                 SizedBox(height: 15),
-                // Género
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -82,17 +88,27 @@ class Formulario extends StatelessWidget {
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   margin: EdgeInsets.symmetric(horizontal: 15),
-                  child: TextFormField(
-                    controller: generoController,
-                    style: TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Género',
-                    ),
+                  child: DropdownButton<String>(
+                    value: generoValue,
+                    isExpanded: true,
+                    hint: Text('Género'),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        generoValue = newValue;
+                      });
+                    },
+                    items: <String>['Masculino', 'Femenino', 'Otro']
+                        .map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ),
+
                 SizedBox(height: 15),
-                // DUI
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -109,8 +125,9 @@ class Formulario extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 15),
-                // Dirección
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -127,8 +144,9 @@ class Formulario extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 15),
-                // Correo Electrónico
+
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -146,15 +164,16 @@ class Formulario extends StatelessWidget {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingresa tu correo electrónico';
-                      } else if (!value!.contains('@')) {
+                      } else if (!value.contains('@')) {
                         return 'Correo electrónico no válido';
                       }
                       return null;
                     },
                   ),
                 ),
-                SizedBox(height: 25), // Espacio entre los campos de texto y el botón
-                // Botón Enviar
+
+                SizedBox(height: 25),
+
                 Container(
                   child: ElevatedButton(
                     onPressed: () {
@@ -165,7 +184,7 @@ class Formulario extends StatelessWidget {
                             builder: (context) => NuevaVentana(
                               nombres: nombreController.text,
                               apellidos: apellidoController.text,
-                              genero: generoController.text,
+                              genero: generoValue ?? 'No especificado',
                               dui: duiController.text,
                               direccion: direccionController.text,
                               correo: correoController.text,
@@ -195,63 +214,61 @@ class NuevaVentana extends StatelessWidget {
   final String correo;
 
   NuevaVentana({
-  required this.nombres,
-  required this.apellidos,
-  required this.genero,
-  required this.dui,
-  required this.direccion,
-  required this.correo,
-});
+    required this.nombres,
+    required this.apellidos,
+    required this.genero,
+    required this.dui,
+    required this.direccion,
+    required this.correo,
+  });
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Información ingresada'),
-      backgroundColor: Colors.teal, // Cambia el color de fondo de la barra de la aplicación
-    ),
-    body: Container(
-      color: Colors.grey[200], // Cambia el color de fondo del cuerpo de la ventana
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _buildInfoCard('Nombres', nombres, Icons.person),
-          _buildInfoCard('Apellidos', apellidos, Icons.person),
-          _buildInfoCard('Género', genero, Icons.person_outline),
-          _buildInfoCard('DUI', dui, Icons.credit_card),
-          _buildInfoCard('Dirección', direccion, Icons.location_on),
-          _buildInfoCard('Correo Electrónico', correo, Icons.email),
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Información ingresada'),
+        backgroundColor: Colors.teal,
       ),
-    ),
-  );
-}
-
-Widget _buildInfoCard(String label, String value, IconData icon) {
-  return Card(
-    elevation: 4,
-    margin: EdgeInsets.only(bottom: 16),
-    child: ListTile(
-      leading: Icon(
-        icon,
-        color: Colors.teal, // Cambia el color del ícono
-      ),
-      title: Text(
-        label,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.teal, // Cambia el color del título
+      body: Container(
+        color: Colors.grey[200],
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _buildInfoCard('Nombres', nombres, Icons.person),
+            _buildInfoCard('Apellidos', apellidos, Icons.person),
+            _buildInfoCard('Género', genero, Icons.person_outline),
+            _buildInfoCard('DUI', dui, Icons.credit_card),
+            _buildInfoCard('Dirección', direccion, Icons.location_on),
+            _buildInfoCard('Correo Electrónico', correo, Icons.email),
+          ],
         ),
       ),
-      subtitle: Text(
-        value,
-        style: TextStyle(fontSize: 16),
+    );
+  }
+
+  Widget _buildInfoCard(String label, String value, IconData icon) {
+    return Card(
+      elevation: 4,
+      margin: EdgeInsets.only(bottom: 16),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: Colors.teal,
+        ),
+        title: Text(
+          label,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.teal,
+          ),
+        ),
+        subtitle: Text(
+          value,
+          style: TextStyle(fontSize: 16),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
-
