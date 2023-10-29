@@ -247,6 +247,7 @@ class NuevaVentana extends StatelessWidget {
     );
   }
 
+
   Widget _buildInfoCard(String label, String value, IconData icon) {
     return Card(
       elevation: 4,
