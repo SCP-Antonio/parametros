@@ -14,10 +14,10 @@ class _FormularioState extends State<Formulario> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellidoController = TextEditingController();
-  String? generoValue;
   TextEditingController duiController = TextEditingController();
   TextEditingController direccionController = TextEditingController();
   TextEditingController correoController = TextEditingController();
+  String? generoValue;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,6 @@ class _FormularioState extends State<Formulario> {
                 buildTextField('Nombres', nombreController, 'Por favor, ingresa tus nombres', Icons.person),
                 buildTextField('Apellidos', apellidoController, 'Por favor, ingresa tus apellidos', Icons.person),
 
-
-
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -51,7 +49,13 @@ class _FormularioState extends State<Formulario> {
                         generoValue = newValue;
                       });
                     },
-                    hint: Text('Género'),
+                    hint: Row(
+                      children: <Widget>[
+                        Icon(Icons.person, size: 25), // Agregar un icono al campo de selección de género
+                        SizedBox(width: 22),
+                        Text('Género', style: TextStyle(fontSize: 20)),
+                      ],
+                    ),
                     items: <String>['Masculino', 'Femenino', 'Otro']
                         .map((String value) {
                       return DropdownMenuItem<String>(
@@ -64,7 +68,9 @@ class _FormularioState extends State<Formulario> {
                     }).toList(),
                   ),
                 ),
+
                 SizedBox(height: 20),
+
                 buildTextField('DUI', duiController, '', Icons.credit_card),
                 buildTextField('Dirección', direccionController, '', Icons.location_on),
                 buildTextField('Correo Electrónico', correoController, 'Por favor, ingresa tu correo electrónico', Icons.email),
@@ -81,10 +87,10 @@ class _FormularioState extends State<Formulario> {
                             builder: (context) => NuevaVentana(
                               nombres: nombreController.text,
                               apellidos: apellidoController.text,
-                              genero: generoValue ?? 'No especificado',
                               dui: duiController.text,
                               direccion: direccionController.text,
                               correo: correoController.text,
+                              genero: generoValue ?? 'No especificado',
                             ),
                           ),
                         );
@@ -164,6 +170,7 @@ class NuevaVentana extends StatelessWidget {
       body: Container(
         color: Colors.grey[200],
         padding: EdgeInsets.all(20),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -182,7 +189,7 @@ class NuevaVentana extends StatelessWidget {
   Widget _buildInfoCard(String label, String value, IconData icon) {
     return Card(
       elevation: 4,
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 25),
       child: ListTile(
         leading: Icon(
           icon,
